@@ -70,7 +70,6 @@
 |               | Docker | Vercel | Cloudflare |
 | :-----------: | :----: | :----: | :--------: |
 | localstorage  |   ✅   |   ✅   |     ✅     |
-|  原生 redis   |   ✅   |        |            |
 | Cloudflare D1 |        |        |     ✅     |
 | Upstash Redis |   ☑️   |   ✅   |     ☑️     |
 
@@ -162,42 +161,7 @@ services:
     #   - ./config.json:/app/config.json:ro
 ```
 
-### Redis 版本（推荐，多账户数据隔离，跨设备同步）
 
-```yaml
-services:
-  moontv-core:
-    image: ghcr.io/m-longggg/sun:sha-e316ee3
-    container_name: moontv
-    restart: unless-stopped
-    ports:
-      - '3000:3000'
-    environment:
-      - USERNAME=admin
-      - PASSWORD=admin_password
-      - NEXT_PUBLIC_STORAGE_TYPE=redis
-      - REDIS_URL=redis://moontv-redis:6379
-      - NEXT_PUBLIC_ENABLE_REGISTER=true
-    networks:
-      - moontv-network
-    depends_on:
-      - moontv-redis
-    # 如需自定义配置，可挂载文件
-    # volumes:
-    #   - ./config.json:/app/config.json:ro
-  moontv-redis:
-    image: redis
-    container_name: moontv-redis
-    restart: unless-stopped
-    networks:
-      - moontv-network
-    # 如需持久化
-    # volumes:
-    #   - ./data:/data
-networks:
-  moontv-network:
-    driver: bridge
-```
 
 ## 自动同步最近更改
 
